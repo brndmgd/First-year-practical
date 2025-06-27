@@ -12,6 +12,8 @@ public class TestClass
     public int Property { get; set; }
 
     public void Method() { }
+
+    public void ParameterMethod(int parameter) { }
 }
 
 [Serializable]
@@ -26,6 +28,15 @@ public class ClassAnalyzerTests
         var methods = analyzer.GetPublicMethods();
 
         Assert.Contains("Method", methods);
+    }
+
+    [Fact]
+    public void GetMethodParams_ReturnsCorrectParameters()
+    {
+        var analyzer = new ClassAnalyzer(typeof(TestClass));
+        var parameters = analyzer.GetMethodParams("ParameterMethod");
+
+        Assert.Contains("parameter", parameters);
     }
 
     [Fact]

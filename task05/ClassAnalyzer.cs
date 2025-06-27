@@ -18,6 +18,9 @@ public class ClassAnalyzer
     .GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)
     .Select(m => m.Name);
 
+    public IEnumerable<string> GetMethodParams(string methodname)
+    => _type.GetMethod(methodname)!.GetParameters().Select(p => p.Name!);
+
     public IEnumerable<string> GetAllFields()
     => _type
     .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
