@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 public class Student
 {
-    public string Name { get; set; }
-    public string Faculty { get; set; }
-    public List<int> Grades { get; set; }
+    public required string Name { get; set; }
+    public required string Faculty { get; set; }
+    public required List<int> Grades { get; set; }
 }
 
 public class StudentService
@@ -35,8 +35,5 @@ public class StudentService
 
     // 5. Находит факультет с максимальным средним баллом
     public string GetFacultyWithHighestAverageGrade()
-        => _students
-        .GroupBy(s => s.Faculty)
-        .MaxBy(g => g.Average(s => s.Grades.Average()))
-        .Key;
+        => _students.GroupBy(s => s.Faculty).OrderByDescending(g => g.Average(s => s.Grades.Average())).First().Key;
 }
