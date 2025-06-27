@@ -19,7 +19,15 @@ public class ClassAnalyzer
     .Select(m => m.Name);
 
     public IEnumerable<string> GetMethodParams(string methodname)
-    => _type.GetMethod(methodname)!.GetParameters().Select(p => p.Name!);
+    {
+        var method = _type.GetMethod(methodname);
+        if (method == null)
+        {
+            return new List<string>();
+        }
+
+        return method.GetParameters().Select(p => p.Name!);
+    }
 
     public IEnumerable<string> GetAllFields()
     => _type

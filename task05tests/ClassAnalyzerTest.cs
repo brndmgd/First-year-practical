@@ -8,7 +8,7 @@ using task05;
 public class TestClass
 {
     public int PublicField;
-    private string _privateField;
+    private string _privateField = String.Empty;
     public int Property { get; set; }
 
     public void Method() { }
