@@ -6,16 +6,20 @@ public static class ReflectionHelper
 {
     public static void PrintTypeInfo(this Type type)
     {
+        var flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly;
         var classDisplayName = type.GetCustomAttribute<DisplayNameAttribute>();
         var version = type.GetCustomAttribute<VersionAttribute>();
-        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
-        var properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
+        var methods = type.GetMethods(flags);
+        var properties = type.GetProperties(flags);
 
+        Console.Write($"Класс {type.Name}");
         if (classDisplayName != null)
-            Console.WriteLine($"Класс: {classDisplayName.DisplayName}");
+            Console.Write($": {classDisplayName.DisplayName}");
+        Console.WriteLine();
 
         if (version != null)
             Console.WriteLine($"Версия: {version.Major}.{version.Minor}");
+        Console.WriteLine();
 
         Console.WriteLine("Методы");
         foreach (var m in methods)
@@ -23,8 +27,10 @@ public static class ReflectionHelper
             Console.Write($"Метод {m.Name}");
             var methodDisplayName = m.GetCustomAttribute<DisplayNameAttribute>();
             if (methodDisplayName != null)
-                Console.WriteLine($": {methodDisplayName.DisplayName}");
+                Console.Write($": {methodDisplayName.DisplayName}");
+            Console.WriteLine();
         }
+        Console.WriteLine();
 
         Console.WriteLine("Свойства");
         foreach (var p in properties)
@@ -32,7 +38,8 @@ public static class ReflectionHelper
             Console.Write($"Свойство {p.Name}");
             var propertyDisplayName = p.GetCustomAttribute<DisplayNameAttribute>();
             if (propertyDisplayName != null)
-                Console.WriteLine($": {propertyDisplayName.DisplayName}");
+                Console.Write($": {propertyDisplayName.DisplayName}");
+            Console.WriteLine();
         }
     }
 }
