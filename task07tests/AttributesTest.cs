@@ -58,7 +58,7 @@ public class AttributeReflectionTests
 
         type.PrintTypeInfo();
 
-        Assert.Contains("Класс: Пример класса", output.ToString());
+        Assert.Contains("Класс SampleClass: Пример класса", output.ToString());
         Assert.Contains("Версия: 1.0", output.ToString());
         Assert.Contains("Метод TestMethod: Тестовый метод", output.ToString());
         Assert.Contains("Свойство Number: Числовое свойство", output.ToString());
