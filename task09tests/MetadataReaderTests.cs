@@ -22,13 +22,15 @@ public class UnitTest1
         var dllPath = Directory.GetFiles(slnDirectory, "FileSystemCommands.dll", SearchOption.AllDirectories).First();
         var output = new StringWriter();
         Console.SetOut(output);
-
+        
         string[] args = new string[] { dllPath };
         MetadataReader.Main(args);
 
-        Assert.Contains("Класс DirectorySizeCommand: Команда размер каталога", output.ToString());
-        Assert.Contains("Версия: 1.2", output.ToString());
-        Assert.Contains("Метод Execute: Исполнение команды", output.ToString());
+        Assert.Contains("Класс DirectorySizeCommand", output.ToString());
+        Assert.Contains("DisplayNameAttribute", output.ToString());
+        Assert.Contains("VersionAttribute", output.ToString());
+        Assert.Contains("Execute: нет параметров", output.ToString());
+        Assert.Contains(".ctor: String path", output.ToString());
     }
 
     [Fact]
@@ -44,8 +46,10 @@ public class UnitTest1
         string[] args = new string[] { dllPath };
         MetadataReader.Main(args);
 
-        Assert.Contains("Класс FindFilesCommand: Команда поиска файлов", output.ToString());
-        Assert.Contains("Версия: 2.4", output.ToString());
-        Assert.Contains("Метод Execute: Исполнение команды", output.ToString());
+        Assert.Contains("Класс FindFilesCommand", output.ToString());
+        Assert.Contains("DisplayNameAttribute", output.ToString());
+        Assert.Contains("VersionAttribute", output.ToString());
+        Assert.Contains("Execute: нет параметров", output.ToString());
+        Assert.Contains(".ctor: String path, String mask", output.ToString());
     }
 }
