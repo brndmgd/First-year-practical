@@ -21,25 +21,31 @@ public static class ReflectionHelper
             Console.WriteLine($"Версия: {version.Major}.{version.Minor}");
         Console.WriteLine();
 
-        Console.WriteLine("Методы");
-        foreach (var m in methods)
+        if (methods.Length != 0)
         {
-            Console.Write($"Метод {m.Name}");
-            var methodDisplayName = m.GetCustomAttribute<DisplayNameAttribute>();
-            if (methodDisplayName != null)
-                Console.Write($": {methodDisplayName.DisplayName}");
+            Console.WriteLine("Методы");
+            foreach (var m in methods)
+            {
+                Console.Write($"Метод {m.Name}");
+                var methodDisplayName = m.GetCustomAttribute<DisplayNameAttribute>();
+                if (methodDisplayName != null)
+                    Console.Write($": {methodDisplayName.DisplayName}");
+                Console.WriteLine();
+            }
             Console.WriteLine();
         }
-        Console.WriteLine();
 
-        Console.WriteLine("Свойства");
-        foreach (var p in properties)
+        if (properties.Length != 0)
         {
-            Console.Write($"Свойство {p.Name}");
-            var propertyDisplayName = p.GetCustomAttribute<DisplayNameAttribute>();
-            if (propertyDisplayName != null)
-                Console.Write($": {propertyDisplayName.DisplayName}");
-            Console.WriteLine();
+            Console.WriteLine("Свойства");
+            foreach (var p in properties)
+            {
+                Console.Write($"Свойство {p.Name}");
+                var propertyDisplayName = p.GetCustomAttribute<DisplayNameAttribute>();
+                if (propertyDisplayName != null)
+                    Console.Write($": {propertyDisplayName.DisplayName}");
+                Console.WriteLine();
+            }
         }
     }
 }
