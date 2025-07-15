@@ -30,18 +30,16 @@ public static class DefiniteIntegral
     static void FindArea(double a, double b, Func<double, double> function, double step)
     {
         double curArea = 0;
-        double segment = b - a;
-        int steps = (int)(segment / step);
-        for (int i = 0; i < steps; i++)
+        for (double i = a; i < b; i += step)
         {
-            curArea += step * (function(a + step * i) + function(a + step * (i + 1))) / 2;
+            curArea += step * (function(a + i) + function(a + i + step)) / 2;
         }
 
-        bool hasWrote = false;
-        while (hasWrote == false)
+        bool hasWrote;
+        do
         {
             hasWrote = WriteArea(curArea);
-        }
+        } while (hasWrote == false);
 
         barrier!.SignalAndWait();
     }
@@ -55,9 +53,6 @@ public static class DefiniteIntegral
             Interlocked.Exchange(ref usingResource, 0);
             return true;
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 }
