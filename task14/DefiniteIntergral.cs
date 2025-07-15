@@ -6,11 +6,12 @@ using System.Threading;
 public static class DefiniteIntegral
 {
     private static int usingResource = 0;
-    private static double Area = 0;
+    private static double Area;
 
     static Barrier? barrier;
     public static double Solve(double a, double b, Func<double, double> function, double step, int threadsnumber)
     {
+        Area = 0;
         barrier = new Barrier(threadsnumber + 1);
         double partition = (b - a) / threadsnumber;
         for (int i = 0; i < threadsnumber; i++)
@@ -22,6 +23,7 @@ public static class DefiniteIntegral
         }
 
         barrier.SignalAndWait();
+        barrier.Dispose();
         return Area;
     }
 
