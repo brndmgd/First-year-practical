@@ -1,0 +1,58 @@
+﻿namespace task14;
+
+using System;
+using System.Threading;
+
+public static class DefiniteIntegral
+{
+    private static int usingResource = 0;
+    private static double Area;
+
+    static Barrier? barrier;
+    public static double Solve(double a, double b, Func<double, double> function, double step, int threadsnumber)
+    {
+        Area = 0;
+        barrier = new Barrier(threadsnumber + 1);
+        double partition = (b - a) / threadsnumber;
+        for (int i = 0; i < threadsnumber; i++)
+        {
+            double curStart = a + partition * i;
+            double curEnd = a + partition * (i + 1);
+            Thread myThread = new Thread(() => FindArea(curStart, curEnd, function, step));
+            myThread.Start();
+        }
+
+        barrier.SignalAndWait();
+        barrier.Dispose();
+        return Area;
+    }
+
+    static void FindArea(double a, double b, Func<double, double> function, double step)
+    {
+        double curArea = 0;
+        for (double i = a; i < b; i += step)
+        {
+            curArea += step * (function(i) + function(Math.Min(i + step, b))) / 2;
+        }
+
+        bool hasWrote = false;
+        while (hasWrote == false)
+        {
+            hasWrote = WriteArea(curArea);
+        } 
+
+        barrier!.SignalAndWait();
+    }
+
+    static bool WriteArea(double curArea)
+    {
+        if (0 == Interlocked.Exchange(ref usingResource, 1))
+        {
+            Area += curArea;
+
+            Interlocked.Exchange(ref usingResource, 0);
+            return true;
+        }
+        return false;
+    }
+}
