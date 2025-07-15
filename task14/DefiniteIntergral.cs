@@ -32,14 +32,14 @@ public static class DefiniteIntegral
         double curArea = 0;
         for (double i = a; i < b; i += step)
         {
-            curArea += step * (function(a + i) + function(a + i + step)) / 2;
+            curArea += step * (function(i) + function(Math.Min(i + step, b))) / 2;
         }
 
-        bool hasWrote;
-        do
+        bool hasWrote = false;
+        while (hasWrote == false)
         {
             hasWrote = WriteArea(curArea);
-        } while (hasWrote == false);
+        } 
 
         barrier!.SignalAndWait();
     }
