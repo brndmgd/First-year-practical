@@ -1,8 +1,10 @@
 namespace task17;
 
 using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Threading;
 using ServerLib;
+using task18;
 
 public class ServerThread
 {
@@ -10,6 +12,7 @@ public class ServerThread
     private bool _softStopRequested = false;
     private bool _hardStopRequested = false;
     private BlockingCollection<ICommand> _commands = new BlockingCollection<ICommand>();
+    private IScheduler _scheduler = new RoundRobinScheduler();
 
     public ServerThread()
     {
@@ -34,15 +37,34 @@ public class ServerThread
             if (_softStopRequested && _commands.Count == 0)
                 break;
 
-            ICommand curCommand = _commands.Take();
-
-            try
+            if (_scheduler.HasCommand())
             {
-                curCommand.Execute();
+                var cmd = _scheduler.Select();
+                try
+                {
+                    cmd.Execute();
+                    continue;
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.Handle(ex, cmd);
+                }
             }
-            catch (Exception ex)
+
+            if (_commands.TryTake(out var curCommand, 100))
             {
-                ExceptionHandler.Handle(ex, curCommand);
+                if (curCommand.IsCompleted)
+                {
+                    try
+                    {
+                        curCommand.Execute();
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionHandler.Handle(ex, curCommand);
+                    }
+                }
+                else _scheduler.Add(curCommand);
             }
         }
     }

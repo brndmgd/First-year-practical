@@ -9,6 +9,8 @@ public class TestCommand : ICommand
 
     public TestCommand(Action action) => _action = action;
 
+    public bool IsCompleted { get; } = true;
+
     public void Execute() => _action();
 }
 

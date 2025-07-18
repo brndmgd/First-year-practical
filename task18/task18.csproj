@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ServerLib\ServerLib.csproj" />
-    <ProjectReference Include="..\task18\task18.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

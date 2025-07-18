@@ -8,6 +8,8 @@ public class HardStop : ICommand
 
     public HardStop(ServerThread thread) => _thread = thread;
 
+    public bool IsCompleted { get; } = true;
+
     public void Execute()
     {
         if (!_thread.isCurrentThread())
@@ -22,6 +24,8 @@ public class SoftStop : ICommand
     private ServerThread _thread;
 
     public SoftStop(ServerThread thread) => _thread = thread;
+
+    public bool IsCompleted { get; } = true;
 
     public void Execute()
     {
