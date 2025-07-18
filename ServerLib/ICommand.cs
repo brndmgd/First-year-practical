@@ -1,4 +1,4 @@
-﻿namespace task17;
+﻿namespace ServerLib;
 
 public interface ICommand
 {

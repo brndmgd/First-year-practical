@@ -1,5 +1,7 @@
 namespace task17;
 
+using ServerLib;
+
 public class HardStop : ICommand
 {
     private ServerThread _thread;

@@ -1,5 +1,6 @@
 ﻿namespace task17tests;
 
+using ServerLib;
 using task17;
 
 public class TestCommand : ICommand
