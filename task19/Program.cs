@@ -7,12 +7,12 @@ public class TestCommand(int id, int expectedCount) : ICommand
 {
     public int Counter = 0;
 
-    public bool IsCompleted => Counter == expectedCount;
-
     public void Execute()
     {
         Console.WriteLine($"Поток {id} вызов {++Counter}");
     }
+
+    public bool IsCompleted => Counter == expectedCount - 1;
 }
 
 public class LongOperation
@@ -28,5 +28,7 @@ public class LongOperation
 
         serverThread.Start();
         Thread.Sleep(500);
+
+        serverThread.RequestHardStop();
     }
 }
